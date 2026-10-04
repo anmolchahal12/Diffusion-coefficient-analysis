@@ -31,7 +31,7 @@ I(x) = (x − x_M)(C(x) − C_L) − A(x)
 
 The script calculates A using trapezoid quadrature along position. This avoids constructing the potentially multivalued inverse x(C). The underlying mass-balance equation is unchanged. Noise remains in the data and derivatives.
 
-![Figure 2: Matano planes](results/workbook-position-analysis/concentration-profiles-matano-interfaces.png)
+![Figure 2: Concentration Profiles with Matano Interfaces](results/workbook-position-analysis/concentration-profiles-matano-interfaces.png)
 
 ## 3. Interdiffusion coefficients
 
