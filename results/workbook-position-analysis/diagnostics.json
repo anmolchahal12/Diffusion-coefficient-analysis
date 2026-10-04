@@ -1,0 +1,47 @@
+{
+  "1100": {
+    "points_total": 1000,
+    "points_in_interval": 185,
+    "nonfinite_D_total": 5,
+    "nonpositive_D_total": 369,
+    "invalid_D_in_interval": 0,
+    "local_steps_against_overall_trend": 288,
+    "repeated_concentration_values": 118,
+    "matano_position_um": 501.10600502512614,
+    "end_integral_m_wt_percent": 0.0,
+    "concentration_at_left_wt_percent": 0.091,
+    "concentration_at_right_wt_percent": 2.877,
+    "smoothing": "none",
+    "method": "position-space integration by parts; trapezoid quadrature"
+  },
+  "1200": {
+    "points_total": 1000,
+    "points_in_interval": 180,
+    "nonfinite_D_total": 1,
+    "nonpositive_D_total": 243,
+    "invalid_D_in_interval": 0,
+    "local_steps_against_overall_trend": 244,
+    "repeated_concentration_values": 88,
+    "matano_position_um": 1010.4281919258767,
+    "end_integral_m_wt_percent": 0.0,
+    "concentration_at_left_wt_percent": 3.065,
+    "concentration_at_right_wt_percent": 0.043,
+    "smoothing": "none",
+    "method": "position-space integration by parts; trapezoid quadrature"
+  },
+  "1300": {
+    "points_total": 800,
+    "points_in_interval": 325,
+    "nonfinite_D_total": 2,
+    "nonpositive_D_total": 86,
+    "invalid_D_in_interval": 0,
+    "local_steps_against_overall_trend": 99,
+    "repeated_concentration_values": 24,
+    "matano_position_um": 789.4042681883022,
+    "end_integral_m_wt_percent": 0.0,
+    "concentration_at_left_wt_percent": 2.838,
+    "concentration_at_right_wt_percent": 0.034,
+    "smoothing": "none",
+    "method": "position-space integration by parts; trapezoid quadrature"
+  }
+}

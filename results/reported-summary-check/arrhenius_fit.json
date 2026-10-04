@@ -1,0 +1,9 @@
+{
+  "Q_kJ_mol": 317.9332897317098,
+  "D0_m2_s": 0.005988281427895832,
+  "slope_K": -38240.71322248133,
+  "intercept": -5.117950814882558,
+  "r_squared": 0.9992229604214706,
+  "gas_constant_J_mol_K": 8.314,
+  "provenance": "Reported means \u2014 raw-data validation pending"
+}

@@ -1,0 +1,9 @@
+{
+  "Q_kJ_mol": 334.7473762528128,
+  "D0_m2_s": 0.025696281704317356,
+  "slope_K": -40263.09553197171,
+  "intercept": -3.661408978314096,
+  "r_squared": 0.9975892342281855,
+  "gas_constant_J_mol_K": 8.314,
+  "provenance": "Raw profiles \u2014 position method"
+}
