@@ -53,15 +53,6 @@ $$
 
 Here $x_L$ and $x_R$ are the left and right measurement boundaries, $C_L=C(x_L)$ and $C_R=C(x_R)$ are their concentrations, and $x_M$ is the Matano-plane position. The symbol $\xi$ is the position variable within the integral.
 
-This avoids constructing an inverse $x(C)$ from fluctuating or repeated concentration measurements.
-
-The calculation uses:
-
-```python
-area = np.trapezoid(C - C[0], x=x_m)
-x_M = x_m[-1] - area / (C[-1] - C[0])
-```
-
 | Temperature | Matano-plane position |
 |---|---:|
 | 1100 °C | 501.11 μm |
