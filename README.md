@@ -130,7 +130,7 @@ These are estimates from the supplied raw profiles and the stated averaging meth
 
 ## Requirements
 
-- Python 3.12 (tested with 3.12.14).
+- Python 3.12
 - NumPy, SciPy, pandas, Matplotlib, and openpyxl.
 
 The tested versions are listed in [requirements.txt](requirements.txt).
