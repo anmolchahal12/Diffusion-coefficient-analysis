@@ -98,33 +98,6 @@ $$
 
 The integral is evaluated by parts along the measured position coordinate. Distances are converted to metres and annealing times to seconds, giving coefficients in m²/s.
 
-![Interdiffusion coefficients versus aluminum concentration](results/workbook-position-analysis/03_diffusivity.png)
-
-**Python:** [03_interdiffusion_coefficients.py](src/03_interdiffusion_coefficients.py)
-
-```bash
-python src/03_interdiffusion_coefficients.py
-```
-
-The essential calculation is:
-
-```python
-A = cumulative_trapezoid(C - C[0], x=x_m, initial=0)
-I = (x_m - x_M) * (C - C[0]) - A
-gradient = np.gradient(C, x_m)
-# The full implementation checks small gradients and invalid values.
-D = -I / (2 * time_seconds * gradient)
-```
-
-Mean coefficients are calculated as the arithmetic mean of sampled values within **0.5–2.5 wt% Al**. All samples in that interval are finite and positive in this run.
-
-| Temperature | Annealing time | Mean interdiffusion coefficient | Samples |
-|---|---:|---:|---:|
-| 1100 °C | 201 h | 4.510 × 10⁻¹⁵ m²/s | 185 |
-| 1200 °C | 151 h | 3.855 × 10⁻¹⁴ m²/s | 180 |
-| 1300 °C | 76 h | 1.862 × 10⁻¹³ m²/s | 325 |
-
-[Download the numerical table](results/mean_coefficients.csv).
 
 Higher temperatures give larger mean coefficients. The unsmoothed curves also show local fluctuations, especially at 1300 °C; they do not establish a uniformly increasing coefficient with composition.
 
