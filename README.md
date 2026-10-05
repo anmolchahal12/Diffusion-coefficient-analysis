@@ -126,6 +126,4 @@ Confirm permission to share the supervisor-provided data before making the repos
 
 ## References
 
-- *Core Subject Lab course – Diffusion*, section 2.4, equations (14)–(15), supplied by the author. Full bibliographic details and reference [19] are pending.
-- [Extracting interdiffusion coefficients from binary diffusion couples using traditional methods and a forward-simulation method](https://www.sciencedirect.com/science/article/pii/S0966979512004293).
-- [Development of different methods and their efficiencies for the estimation of diffusion coefficients following the diffusion couple technique](https://www.sciencedirect.com/science/article/pii/S1359645418303288).
+* S. Neumeier, H.U. Rehman, J. Neuner, C.H. Zenk, S. Michel, S. Schuwalow, J. Rogal, R. Drautz, M. Göken, **"Diffusion of solutes in fcc Cobalt investigated by diffusion couples and first principles kinetic Monte Carlo,"** *Acta Materialia*, vol. 106, pp. 304–313, 2016. DOI: [10.1016/j.actamat.2016.01.028](https://doi.org/10.1016/j.actamat.2016.01.028)
