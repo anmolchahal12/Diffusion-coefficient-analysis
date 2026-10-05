@@ -16,20 +16,6 @@ Aluminum concentration is plotted against position across each diffusion couple.
 
 ![Concentration profiles at 1100, 1200, and 1300 °C](results/workbook-position-analysis/01_raw_profiles.png)
 
-**Python:** [01_concentration_profiles.py](src/01_concentration_profiles.py)
-
-```bash
-python src/01_concentration_profiles.py
-```
-
-The plotting operation is:
-
-```python
-ax.plot(position_m * 1e6, concentration_wt_percent, label=temperature)
-ax.set_xlabel("Position (μm)")
-ax.set_ylabel("Aluminum concentration (wt% Al)")
-```
-
 The input measurements are retained without smoothing. Sorting by position preserves the measured position–concentration pairs.
 
 ## 2. Matano planes
