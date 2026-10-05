@@ -22,11 +22,54 @@ The script checks finite values and distinct positions, orders observations by p
 
 ## 2. Matano planes
 
-Let C_L and C_R be concentrations at the first and last position-ordered measurements. Define A(x) as the integral of C(x) − C_L from the left boundary to x. Integration by parts gives:
+The Matano plane defines the mass-balance reference for the Boltzmann–Matano calculation. All three profiles and their Matano planes are shown together, with shaded regions on either side of each plane.
+For a profile with terminal concentrations $C_L$ and $C_R$, the mass-balance condition is
 
-```text
-x_M = x_R − A(x_R)/(C_R − C_L)
-I(x) = (x − x_M)(C(x) − C_L) − A(x)
+$$
+\int_{C_L}^{C_R}\left[x(C)-x_M\right]\,\mathrm{d}C=0.
+$$
+
+The corresponding Matano-plane position is
+
+$$
+x_M=\frac{\displaystyle\int_{C_L}^{C_R}x(C)\,\mathrm{d}C}{C_R-C_L}.
+$$
+
+For numerical evaluation directly along the measured position coordinate, define
+
+$$
+A(x)=\int_{x_L}^{x}\left[C(\xi)-C_L\right]\,\mathrm{d}\xi.
+$$
+
+Integration by parts gives the equivalent expression used in the code:
+
+$$
+x_M=x_R-\frac{A(x_R)}{C_R-C_L}
+=x_R-\frac{\displaystyle\int_{x_L}^{x_R}\left[C(x)-C_L\right]\,\mathrm{d}x}{C_R-C_L}.
+$$
+
+Here $x_L$ and $x_R$ are the left and right measurement boundaries, $C_L=C(x_L)$ and $C_R=C(x_R)$ are their concentrations, and $x_M$ is the Matano-plane position. The symbol $\xi$ is the position variable within the integral.
+
+This avoids constructing an inverse $x(C)$ from fluctuating or repeated concentration measurements.
+
+**Python:** [02_matano_planes.py](src/02_matano_planes.py)
+
+```bash
+python src/02_matano_planes.py
+```
+
+The calculation uses:
+
+```python
+area = np.trapezoid(C - C[0], x=x_m)
+x_M = x_m[-1] - area / (C[-1] - C[0])
+```
+
+| Temperature | Matano-plane position |
+|---|---:|
+| 1100 °C | 501.11 μm |
+| 1200 °C | 1010.43 μm |
+| 1300 °C | 789.40 μm |
 ```
 
 The script calculates A using trapezoid quadrature along position. This avoids constructing the potentially multivalued inverse x(C). The underlying mass-balance equation is unchanged. Noise remains in the data and derivatives.
