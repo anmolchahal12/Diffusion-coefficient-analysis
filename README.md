@@ -69,12 +69,6 @@ Here $x_L$ and $x_R$ are the left and right measurement boundaries, $C_L=C(x_L)$
 
 This avoids constructing an inverse $x(C)$ from fluctuating or repeated concentration measurements.
 
-**Python:** [02_matano_planes.py](src/02_matano_planes.py)
-
-```bash
-python src/02_matano_planes.py
-```
-
 The calculation uses:
 
 ```python
