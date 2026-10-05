@@ -78,10 +78,31 @@ The script calculates A using trapezoid quadrature along position. This avoids c
 
 ## 3. Interdiffusion coefficients
 
-```text
-D̃(x) = −I(x) / [2t (dC/dx)]
-```
+The Boltzmann–Matano relation gives the local interdiffusion coefficient:
 
+$$
+\widetilde{D}(C_i)
+=-\frac{1}{2t}
+\left.\frac{\mathrm{d}x}{\mathrm{d}C}\right|_{C=C_i}
+\int_{C_L}^{C_i}\left[x(C)-x_M\right]\,\mathrm{d}C.
+$$
+
+Here $C_i$ is the concentration at which the coefficient is evaluated, $t$ is the annealing time, and $\left.\mathrm{d}x/\mathrm{d}C\right|_{C_i}$ is the reciprocal of the local concentration gradient. The minus sign corresponds to the displayed integration limits from $C_L$ to $C_i$.
+
+The position-space integral used in the implementation is
+
+$$
+I(x)=\left(x-x_M\right)\left[C(x)-C_L\right]-A(x),
+$$
+
+so the coefficient can equivalently be written as
+
+$$
+\widetilde{D}\bigl(C(x)\bigr)
+=-\frac{I(x)}{2t\,\dfrac{\mathrm{d}C}{\mathrm{d}x}}.
+$$
+
+The integral is evaluated by parts along the measured position coordinate. Distances are converted to metres and annealing times to seconds, giving coefficients in m²/s.
 Use positions in metres, annealing times in seconds, and coefficients in m²/s. Raw finite-difference gradients are used. Full output tables retain negative and undefined estimates for inspection. In this run every sample inside 0.5–2.5 wt% Al is finite and positive; no positivity filtering is needed in that interval.
 
 ![Figure 3: Interdiffusion coefficients](results/workbook-position-analysis/03_diffusivity.png)
