@@ -97,6 +97,7 @@ $$
 $$
 
 The integral is evaluated by parts along the measured position coordinate. Distances are converted to metres and annealing times to seconds, giving coefficients in m²/s.
+![Interdiffusion coefficients versus aluminum concentration](results/workbook-position-analysis/03_diffusivity.png)
 
 
 Higher temperatures give larger mean coefficients. The unsmoothed curves also show local fluctuations, especially at 1300 °C; they do not establish a uniformly increasing coefficient with composition.
@@ -127,17 +128,6 @@ The regression uses $1/T$, with temperature in kelvin. The graph displays $1000/
 
 ![Arrhenius plot with fitted parameters](results/reported-summary-check/04_arrhenius.png)
 
-**Python:** [04_arrhenius_analysis.py](src/04_arrhenius_analysis.py)
-
-```bash
-python src/04_arrhenius_analysis.py
-```
-
-```python
-fit = linregress(1 / temperature_K, np.log(mean_D))
-Q_kJ_mol = -fit.slope * 8.314 / 1000
-D0_m2_s = np.exp(fit.intercept)
-```
 
 | Parameter | Value from the current calculation |
 |---|---:|
