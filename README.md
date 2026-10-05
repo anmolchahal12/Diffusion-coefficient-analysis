@@ -1,28 +1,45 @@
-# Determination of the Interdiffusion Coefficient by Diffusion Couples
+# Diffusion Coefficient Analysis
 
-Python analysis of Co–Al concentration profiles at **1100, 1200, and 1300 °C**, using Boltzmann–Matano analysis and an Arrhenius fit over **0.5–2.5 wt% Al**.
+**Determination of interdiffusion coefficients in Co–Al diffusion couples using Boltzmann–Matano analysis.**
 
-The workflow now runs on the uploaded workbook. It preserves the measured profiles without smoothing and evaluates the BM integral in position space, avoiding inversion of noisy concentration data. Results are raw-profile estimates under the assumptions below, not independently validated material constants.
+This project follows four stages: concentration profiles, Matano-plane determination, composition-dependent interdiffusion coefficients, and Arrhenius analysis. Python scripts, the input workbook, and calculated figures and tables are included.
 
-## Data
-
-| Temperature | Annealing time | Observations |
+| Temperature | Annealing time | Concentration interval for mean coefficients |
 |---|---|---|
-| 1100 °C | 201 h | 1000 |
-| 1200 °C | 151 h | 1000 |
-| 1300 °C | 76 h | 800 |
-
-`data/Boltzmann_Matano_CoAl.xlsx` is retained unchanged. The `1100C`, `1200C`, and `1300C` sheets provide position in column A (μm) and concentration in column B (wt% Al). Annealing times were confirmed against their parameter blocks. Existing calculation columns are not inputs to Python: the workbook contains formula errors documented in [the audit](docs/workbook-audit.md).
+| 1100 °C | 201 h | 0.5–2.5 wt% Al |
+| 1200 °C | 151 h | 0.5–2.5 wt% Al |
+| 1300 °C | 76 h | 0.5–2.5 wt% Al |
 
 ## 1. Concentration profiles
 
-The script checks finite values and distinct positions, orders observations by position, and converts μm to m. No smoothing or removal of noisy observations is performed. Coordinate offsets alone do not establish physical displacement.
+Aluminum concentration is plotted against position across each diffusion couple. The profiles show the transition between the Co-rich and Al-enriched regions. Position is displayed in micrometres and concentration in weight percent aluminum.
 
-![Figure 1: Concentration profiles](results/workbook-position-analysis/01_raw_profiles.png)
+![Concentration profiles at 1100, 1200, and 1300 °C](results/01_concentration_profiles.png)
+
+**Python:** [01_concentration_profiles.py](src/01_concentration_profiles.py)
+
+```bash
+python src/01_concentration_profiles.py
+```
+
+The plotting operation is:
+
+```python
+ax.plot(position_m * 1e6, concentration_wt_percent, label=temperature)
+ax.set_xlabel("Position (μm)")
+ax.set_ylabel("Aluminum concentration (wt% Al)")
+```
+
+The input measurements are retained without smoothing. Sorting by position preserves the measured position–concentration pairs.
 
 ## 2. Matano planes
 
 The Matano plane defines the mass-balance reference for the Boltzmann–Matano calculation. All three profiles and their Matano planes are shown together, with shaded regions on either side of each plane.
+
+![Combined concentration profiles with Matano planes and shaded regions](results/02_matano_planes.png)
+
+*Dashed lines match the color of each temperature profile. Shading illustrates the left and right regions; overlapping shades are not a quantitative measure of mass balance.*
+
 For a profile with terminal concentrations $C_L$ and $C_R$, the mass-balance condition is
 
 $$
@@ -70,11 +87,8 @@ x_M = x_m[-1] - area / (C[-1] - C[0])
 | 1100 °C | 501.11 μm |
 | 1200 °C | 1010.43 μm |
 | 1300 °C | 789.40 μm |
-```
 
-The script calculates A using trapezoid quadrature along position. This avoids constructing the potentially multivalued inverse x(C). The underlying mass-balance equation is unchanged. Noise remains in the data and derivatives.
-
-![Figure 2: Matano planes](<results/workbook-position-analysis/Concentration Profiles with Matano Interfaces and Shaded Areas.png>)
+Positions refer to the original coordinate system of each measurement. Their differences alone do not establish physical movement of an interface.
 
 ## 3. Interdiffusion coefficients
 
@@ -103,93 +117,133 @@ $$
 $$
 
 The integral is evaluated by parts along the measured position coordinate. Distances are converted to metres and annealing times to seconds, giving coefficients in m²/s.
-Use positions in metres, annealing times in seconds, and coefficients in m²/s. Raw finite-difference gradients are used. Full output tables retain negative and undefined estimates for inspection. In this run every sample inside 0.5–2.5 wt% Al is finite and positive; no positivity filtering is needed in that interval.
 
-![Figure 3: Interdiffusion coefficients](results/workbook-position-analysis/03_diffusivity.png)
+![Interdiffusion coefficients versus aluminum concentration](results/03_interdiffusion_coefficients.png)
 
-The mean is the **arithmetic mean of sampled coefficients**, matching the original notebook convention. It is not a uniform-composition integral average.
+**Python:** [03_interdiffusion_coefficients.py](src/03_interdiffusion_coefficients.py)
 
-| Temperature | Matano position (μm) | Mean D (m²/s) | Samples in mean |
+```bash
+python src/03_interdiffusion_coefficients.py
+```
+
+The essential calculation is:
+
+```python
+A = cumulative_trapezoid(C - C[0], x=x_m, initial=0)
+I = (x_m - x_M) * (C - C[0]) - A
+gradient = np.gradient(C, x_m)
+# The full implementation checks small gradients and invalid values.
+D = -I / (2 * time_seconds * gradient)
+```
+
+Mean coefficients are calculated as the arithmetic mean of sampled values within **0.5–2.5 wt% Al**. All samples in that interval are finite and positive in this run.
+
+| Temperature | Annealing time | Mean interdiffusion coefficient | Samples |
 |---|---:|---:|---:|
-| 1100 °C | 501.106 | 4.51026338 × 10⁻¹⁵ | 185 |
-| 1200 °C | 1010.428 | 3.85468597 × 10⁻¹⁴ | 180 |
-| 1300 °C | 789.404 | 1.86222651 × 10⁻¹³ | 325 |
+| 1100 °C | 201 h | 4.510 × 10⁻¹⁵ m²/s | 185 |
+| 1200 °C | 151 h | 3.855 × 10⁻¹⁴ m²/s | 180 |
+| 1300 °C | 76 h | 1.862 × 10⁻¹³ m²/s | 325 |
 
-The temperature ordering is clear. However, D does not increase monotonically with concentration at every temperature. The unsmoothed 1300 °C result has substantial local variation.
+[Download the numerical table](results/mean_coefficients.csv).
+
+Higher temperatures give larger mean coefficients. The unsmoothed curves also show local fluctuations, especially at 1300 °C; they do not establish a uniformly increasing coefficient with composition.
 
 ## 4. Arrhenius analysis
 
-```text
-D̄(T) = D₀ exp[−Q/(RT)]
-ln(D̄) = ln(D₀) − (Q/R)(1/T)
+The temperature dependence of the mean coefficient is described by
+
+$$
+\overline{D}(T)=D_0\exp\left(-\frac{Q}{RT}\right),
+$$
+
+which gives
+
+$$
+\ln\overline{D}=\ln D_0-\frac{Q}{R}\,\frac{1}{T}.
+$$
+
+For the fitted line $y=mu+b$, with $y=\ln\overline{D}$ and $u=1/T$,
+
+$$
+Q=-mR,\qquad D_0=\exp(b).
+$$
+
+Here $Q$ is the apparent activation energy, $D_0$ is the pre-exponential factor, $R$ is the gas constant, and $T$ is absolute temperature. Logarithms use numerical coefficient values expressed in m²/s.
+
+The regression uses $1/T$, with temperature in kelvin. The graph displays $1000/T$ for readability.
+
+![Arrhenius plot with fitted parameters](results/04_arrhenius.png)
+
+**Python:** [04_arrhenius_analysis.py](src/04_arrhenius_analysis.py)
+
+```bash
+python src/04_arrhenius_analysis.py
 ```
 
-The fit uses natural logarithms of numerical coefficients expressed in m²/s and temperatures in kelvin. The displayed axis is 1000/T; regression uses 1/T. R = 8.314 J mol⁻¹ K⁻¹ is retained from the notebook.
+```python
+fit = linregress(1 / temperature_K, np.log(mean_D))
+Q_kJ_mol = -fit.slope * 8.314 / 1000
+D0_m2_s = np.exp(fit.intercept)
+```
 
-For the uploaded profiles using position-space integration:
+| Parameter | Value from the current calculation |
+|---|---:|
+| Apparent activation energy, $Q$ | 334.75 kJ/mol |
+| Pre-exponential factor, $D_0$ | 2.570 × 10⁻² m²/s |
+| $R^2$ | 0.997589 |
 
-- **Q = 334.75 kJ/mol**
-- **D₀ = 2.56963 × 10⁻² m²/s**
-- **R² = 0.997589**
+These are estimates from the supplied raw profiles and the stated averaging method. They differ from the earlier report's values of 317.93 kJ/mol and 5.988 × 10⁻³ m²/s. The [calculation notes](docs/calculation-notes.md) explain the numerical changes and comparison.
 
-![Figure 4: Arrhenius fit](results/workbook-position-analysis/04_arrhenius.png)
+## Requirements
 
-These differ from the earlier reported means and the workbook's cached results. See [the comparison](docs/workbook-audit.md). The earlier means reproduce Q = 317.93 kJ/mol, but reproducing that regression alone does not establish those means from this workbook.
+- Python 3.12 (tested with 3.12.14).
+- NumPy, SciPy, pandas, Matplotlib, and openpyxl.
 
-Three temperatures do not establish a vacancy mechanism. Q is an apparent activation energy for the chosen composition-averaged coefficient, not automatically a vacancy formation-plus-migration energy.
+The tested versions are listed in [requirements.txt](requirements.txt).
 
-## Run
+## Installation and usage
 
-Checked with Python 3.12.14. Tested package versions are in `requirements.txt`.
+Download or clone the repository, open a terminal in its folder, and install the dependencies:
 
 ```bash
 python -m pip install -r requirements.txt
-python src/analysis.py --excel data/Boltzmann_Matano_CoAl.xlsx --output results/local-run
 ```
 
-Each run requires a new output directory. Outputs comprise four figures, full coefficient tables, a mean table, diagnostics, and Arrhenius parameters.
-
-To reproduce only the earlier reported-mean regression:
+Run all four stages:
 
 ```bash
-python src/analysis.py --reported-summary --output results/local-reported
+python run_analysis.py
 ```
 
-The guarded earlier inverse-profile algorithm remains available with `--method inverse`. It stops on these nonmonotonic data. The position-space method is the default. The older workbook layout can also be read with an explicit `--position-unit m` or `--position-unit um`.
-
-## Verification and limitations
+On systems where Python is called `python3`, replace `python` with `python3`. Figures and numerical tables are written to `results/`; rerunning updates the generated files. To save a separate run:
 
 ```bash
-python -m unittest discover -s tests -v
+python run_analysis.py --output results/new-run
 ```
 
-Five numerical checks pass, including an analytical constant-diffusivity profile, coordinate translation and reversed concentration orientation, known Arrhenius parameters, and invalid-input handling. The full workflow runs on the supplied workbook; all four figures were visually inspected.
+Each stage can also run independently using the commands above. Stages 3 and 4 recompute their required coefficients from the workbook, so their results do not depend on previous notebook execution order.
 
-- First and last concentrations are treated as terminal compositions. Some profile ends fluctuate or change abruptly; adequate terminal plateaus remain to be established.
-- No smoothing is applied. Raw gradients can yield unstable local coefficients, especially near flat tails.
-- Using wt% directly assumes it is proportional to the relevant concentration under a constant-density approximation. Density/volume variation and the physical reference frame remain to be established.
-- The mean is a sample arithmetic average, which differs from uniform-composition averaging for unequal concentration spacing.
-- No experimental uncertainty or endpoint-sensitivity study is included. Fit precision is not an uncertainty bound.
+## Project structure
 
-## Repository contents
-
-| Path | Purpose |
+| File or folder | Contents |
 |---|---|
-| `src/analysis.py` | Calculations, validation, fitting, and plotting |
-| `data/` | Unchanged source workbook and earlier reported summary |
-| `results/workbook-position-analysis/` | Recalculated results from the uploaded data |
-| `results/reported-summary-check/` | Fit from the earlier reported means |
-| `docs/workbook-audit.md` | Source errors, corrections, and comparison |
-| `tests/` | Independent numerical checks |
+| `README.md` | Project explanation and main figures |
+| `run_analysis.py` | Run all four stages |
+| `src/01_concentration_profiles.py` | Run concentration-profile plotting |
+| `src/02_matano_planes.py` | Run the combined Matano-plane plot |
+| `src/03_interdiffusion_coefficients.py` | Run coefficient analysis and export the mean table |
+| `src/04_arrhenius_analysis.py` | Run the Arrhenius fit |
+| `src/workflow.py` | Shared plotting and file-handling functions |
+| `src/diffusion.py` | Shared scientific calculations and validation |
+| `data/` | Input workbook |
+| `results/` | Four figures, coefficient tables, means, and fit parameters |
+| `docs/calculation-notes.md` | Assumptions and comparison with earlier calculations |
+| `tests/` | Numerical checks |
 
 ## Contribution and Provenance
 
 The initial notebook code, reported results, position-space integration, and numerical checks were developed by the author. The raw dataset was obtained directly from experimental measurements and processed using a Python-based data analysis workflow rather than traditional Excel-based methods. Complete the attribution and provenance of any adapted code before publication.
 
-## License and Repository Status
+## Reference
 
-This repository is maintained as personal work. An open-source license has not yet been selected, and this package has not been published to GitHub.
-
-## References
-
-* S. Neumeier, H.U. Rehman, J. Neuner, C.H. Zenk, S. Michel, S. Schuwalow, J. Rogal, R. Drautz, M. Göken, **"Diffusion of solutes in fcc Cobalt investigated by diffusion couples and first principles kinetic Monte Carlo,"** *Acta Materialia*, vol. 106, pp. 304–313, 2016. DOI: [10.1016/j.actamat.2016.01.028](https://doi.org/10.1016/j.actamat.2016.01.028)
+S. Neumeier, H.U. Rehman, J. Neuner, C.H. Zenk, S. Michel, S. Schuwalow, J. Rogal, R. Drautz, M. Göken, "Diffusion of solutes in fcc Cobalt investigated by diffusion couples and first principles kinetic Monte Carlo," Acta Materialia, vol. 106, pp. 304–313, 2016. DOI: 10.1016/j.actamat.2016.01.028
