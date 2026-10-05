@@ -100,20 +100,6 @@ The integral is evaluated by parts along the measured position coordinate. Dista
 
 ![Interdiffusion coefficients versus aluminum concentration](results/workbook-position-analysis/03_diffusivity.png)
 
-**Python:** [03_interdiffusion_coefficients.py](src/03_interdiffusion_coefficients.py)
-
-```bash
-python src/03_interdiffusion_coefficients.py
-```
-
-The essential calculation is:
-
-```python
-A = cumulative_trapezoid(C - C[0], x=x_m, initial=0)
-I = (x_m - x_M) * (C - C[0]) - A
-gradient = np.gradient(C, x_m)
-# The full implementation checks small gradients and invalid values.
-D = -I / (2 * time_seconds * gradient)
 ```
 
 Mean coefficients are calculated as the arithmetic mean of sampled values within **0.5–2.5 wt% Al**. All samples in that interval are finite and positive in this run.
