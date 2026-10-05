@@ -36,7 +36,7 @@ The input measurements are retained without smoothing. Sorting by position prese
 
 The Matano plane defines the mass-balance reference for the Boltzmann–Matano calculation. All three profiles and their Matano planes are shown together, with shaded regions on either side of each plane.
 
-![Combined concentration profiles with Matano planes and shaded regions](results/02_matano_planes.png)
+![Combined concentration profiles with Matano planes and shaded regions](results/workbook-position-analysis/Concentration Profiles with Matano Interfaces and Shaded Areas.png)
 
 *Dashed lines match the color of each temperature profile. Shading illustrates the left and right regions; overlapping shades are not a quantitative measure of mass balance.*
 
@@ -118,7 +118,7 @@ $$
 
 The integral is evaluated by parts along the measured position coordinate. Distances are converted to metres and annealing times to seconds, giving coefficients in m²/s.
 
-![Interdiffusion coefficients versus aluminum concentration](results/03_interdiffusion_coefficients.png)
+![Interdiffusion coefficients versus aluminum concentration](results/workbook-position-analysis/03_diffusivity.png)
 
 **Python:** [03_interdiffusion_coefficients.py](src/03_interdiffusion_coefficients.py)
 
@@ -172,7 +172,7 @@ Here $Q$ is the apparent activation energy, $D_0$ is the pre-exponential factor,
 
 The regression uses $1/T$, with temperature in kelvin. The graph displays $1000/T$ for readability.
 
-![Arrhenius plot with fitted parameters](results/04_arrhenius.png)
+![Arrhenius plot with fitted parameters](results/reported-summary-check/04_arrhenius.png)
 
 **Python:** [04_arrhenius_analysis.py](src/04_arrhenius_analysis.py)
 
