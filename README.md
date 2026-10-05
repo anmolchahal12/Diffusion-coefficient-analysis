@@ -118,11 +118,13 @@ Five numerical checks pass, including an analytical constant-diffusivity profile
 | `docs/workbook-audit.md` | Source errors, corrections, and comparison |
 | `tests/` | Independent numerical checks |
 
-## Contribution and provenance
+## Contribution and Provenance
 
-The supervisor provided the measurements. The author supplied the initial notebook code and reported results. The repository was organized and reviewed with AI assistance; position-space integration and numerical checks were added during review. Complete the experimental attribution and provenance of any adapted code before publication.
+The initial notebook code, reported results, position-space integration, and numerical checks were developed by the author. The raw dataset was obtained directly from experimental measurements and processed using a Python-based data analysis workflow rather than traditional Excel-based methods. Complete the attribution and provenance of any adapted code before publication.
 
-Confirm permission to share the supervisor-provided data before making the repository public. No licence has been selected. This package has not been published to GitHub.
+## License and Repository Status
+
+This repository is maintained as personal work. An open-source license has not yet been selected, and this package has not been published to GitHub.
 
 ## References
 
