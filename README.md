@@ -3,7 +3,6 @@
 **Determination of interdiffusion coefficients in Co–Al diffusion couples using Boltzmann–Matano analysis.**
 
 This project follows four stages: concentration profiles, Matano-plane determination, composition-dependent interdiffusion coefficients, and Arrhenius analysis. Python scripts, the input workbook, and calculated figures and tables are included.
-The 1100C, 1200C, and 1300C sheets provide position in column A (μm) and concentration in column B (wt% Al). Annealing times were confirmed against their parameter blocks.
 
 | Temperature | Annealing time | Concentration interval for mean coefficients |
 |---|---|---|
