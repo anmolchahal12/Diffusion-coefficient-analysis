@@ -36,7 +36,7 @@ The input measurements are retained without smoothing. Sorting by position prese
 
 The Matano plane defines the mass-balance reference for the Boltzmann–Matano calculation. All three profiles and their Matano planes are shown together, with shaded regions on either side of each plane.
 
-![Combined concentration profiles with Matano planes and shaded regions](results/workbook-position-analysis/concentration_profiles_matano_shaded.png) 
+![Combined concentration profiles with Matano planes and shaded regions](results/workbook-position-analysis/concentration_profiles_matano_shaded.png)
 
 *Dashed lines match the color of each temperature profile. Shading illustrates the left and right regions; overlapping shades are not a quantitative measure of mass balance.*
 
