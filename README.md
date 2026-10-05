@@ -14,7 +14,7 @@ This project follows four stages: concentration profiles, Matano-plane determina
 
 Aluminum concentration is plotted against position across each diffusion couple. The profiles show the transition between the Co-rich and Al-enriched regions. Position is displayed in micrometres and concentration in weight percent aluminum.
 
-![Concentration profiles at 1100, 1200, and 1300 °C](results/01_concentration_profiles.png)
+![Concentration profiles at 1100, 1200, and 1300 °C](results/workbook-position-analysis/01_raw_profiles.png)
 
 **Python:** [01_concentration_profiles.py](src/01_concentration_profiles.py)
 
